@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Museo Virtuale del Risorgimento - La Sfida dell'Unità</title>
+  <!-- Tailwind CSS per layout rapido e responsive -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts per un look editoriale e ottocentesco premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Lucide Icons per icone eleganti e minimali -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* Classi di font personalizzate */
+    .font-title {
+      font-family: 'Cinzel', serif;
+    }
+    .font-header {
+      font-family: 'Playfair Display', serif;
+    }
+    .font-body {
+      font-family: 'Lora', serif;
+    }
+
+    /* Palette Colori Storica e d'Atmosfera */
+    :root {
+      --color-parchment: #f4ecd8;
+      --color-burgundy: #58181a;
+      --color-gold: #c5a059;
+      --color-gold-dark: #8a6d3b;
+      --color-sepia-dark: #201713;
+      --color-museum-wall: #12100e;
+    }
+
+    body {
+      background-color: var(--color-museum-wall);
+      color: #eae1d4;
+      font-family: 'Lora', serif;
+      overflow-x: hidden;
+    }
+
+    /* Texture pergamena per i documenti cartacei */
+    .pergamena {
+      background: radial-gradient(circle, #f9f4e8 0%, #ecdcb9 100%);
+      border: 1px solid #d3bf96;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 40px rgba(139, 90, 43, 0.15);
+      color: #2b1d0c;
+    }
+
+    /* Stile pareti museo (sfondo elegante, velluto scuro) */
+    .museum-bg {
+      background: radial-gradient(circle at center, #241a15 0%, #0d0908 100%);
+      position: relative;
+    }
+
+    .museum-bg::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0l40 40-40 40L0 40z' fill='%231f130e' fill-opacity='0.15' fill-rule='evenodd'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* Effetto retro-illuminazione teatrale */
+    .teatral-light {
+      box-shadow: 0 0 80px rgba(197, 160, 89, 0.15);
+    }
+
+    /* Cornice dorata da quadro ottocentesco */
+    .quadro-cornice {
+      border: 12px solid #1c1510;
+      outline: 3px double #c5a059;
+      outline-offset: -8px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.9);
+    }
+
+    /* Transizione fluida e cinematografica */
+    .fade-enter {
+      opacity: 0;
+      transform: scale(0.98) translateY(10px);
+      transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .fade-enter-active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Stile per i bottoni in stile ottocentesco */
+    .btn-ottocento {
+      background: linear-gradient(135deg, #58181a 0%, #3d1012 100%);
+      border: 1px solid #c5a059;
+      color: #f4ecd8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.3s ease;
+      font-family: 'Cinzel', serif;
+    }
+
+    .btn-ottocento:hover {
+      background: linear-gradient(135deg, #702022 0%, #58181a 100%);
+      border-color: #ecdcb9;
+      box-shadow: 0 0 15px rgba(197, 160, 89, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Personalizzazione scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0908;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c5a059;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ecdcb9;
+    }
+  </style>
+</head>
+<body class="font-body selection:bg-red-900 selection:text-amber-100">
+
+  <!-- CAPPELLO MUSICALE & STATO GENERALE -->
+  <div id="app" class="min-h-screen flex flex-col justify-between museum-bg">
+    
+    <!-- HEADER INTERATTIVO DEL MUSEO -->
+    <header class="border-b border-yellow-900/40 bg-black/40 px-6 py-4 backdrop-blur-sm z-30">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <i data-lucide="landmark" class="text-amber-500 w-8 h-8"></i>
+          <div>
+            <h1 class="font-title text-xl tracking-wider text-amber-500 font-bold">MUSEO NAZIONALE VIRTUALE</h1>
+            <p class="text-xs font-title text-stone-400 tracking-widest">DELLA SFIDA DEL RISORGIMENTO</p>
+          </div>
+        </div>
+        
+        <!-- CONTROLLI MUSICA E NAVIGAZIONE -->
+        <div class="flex items-center gap-4 flex-wrap">
+          <button onclick="toggleAudio()" id="audio-btn" class="flex items-center gap-2 text-xs font-title bg-stone-900 border border-amber-500/30 px-3 py-1.5 rounded hover:bg-stone-800 text-stone-300 transition-all">
+            <i data-lucide="music" class="w-4 h-4 text-amber-500"></i>
+            <span id="audio-status">RIPRODUCI INNO</span>
+          </button>
+          
+          <button onclick="goToPage('guida')" class="text-xs font-title bg-red-950/40 border border-red-800/40 px-3 py-1.5 rounded hover:bg-red-900/30 text-red-200 transition-all">
+            <i data-lucide="info" class="inline w-3.5 h-3.5 mr-1 align-middle"></i> GUIDA STANZE
+          </button>
+
+          <button onclick="goToPage('atrio')" class="text-xs font-title bg-amber-500/10 border border-amber-500/40 px-3 py-1.5 rounded hover:bg-amber-500/20 text-amber-200 transition-all">
+            <i data-lucide="home" class="inline w-3.5 h-3.5 mr-1 align-middle"></i> TORNA ALL'ATRIO
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTAINER CONTENUTI PRINCIPALI CON TRANSIZIONE CINEMATOGRAFICA -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-8 z-10">
+      <div id="viewport" class="w-full max-w-7xl mx-auto py-4">
+        <!-- I CONTENUTI VERRANNO INIETTATI QUA DA JAVASCRIPT -->
+      </div>
+    </main>
+
+    <!-- BARRA DI NAVIGAZIONE RAPIDA IN FONDO (STILE PLANIMETRIA MUSEO) -->
+    <footer class="border-t border-yellow-900/30 bg-stone-950/80 px-4 py-3 z-20 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+        <div class="text-stone-400 font-title tracking-wider text-center md:text-left">
+          Planimetria delle Sale:
+        </div>
+        <div class="flex flex-wrap justify-center gap-2" id="navigation-dots">
+          <!-- Popolato dinamicamente -->
+        </div>
+        <div class="text-stone-500 text-center md:text-right">
+          A cura di: P. Bramucci, F. Bruni, T. Mazzamurro, T. Taglioni, M. Ubertini
+        </div>
+      </div>
+    </footer>
+
+    <!-- MODALE GUIDA RAPIDA MUSEO -->
+    <div id="modal-guida" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+      <div class="pergamena max-w-2xl w-full p-6 sm:p-8 rounded-lg relative border-4 border-amber-700/50">
+        <button onclick="closeModal('modal-guida')" class="absolute top-4 right-4 text-stone-800 hover:text-red-800 transition-all">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <h3 class="font-title text-2xl text-red-950 border-b border-red-950/20 pb-2 mb-4">Guida alle Sale del Museo</h3>
+        <p class="mb-4 text-stone-900 leading-relaxed font-body">
+          Benvenuto nel museo interattivo del Risorgimento. Un percorso stimolante e accessibile per approfondire e ripassare l'unificazione italiana. Puoi navigare liberamente tra le sale usando la planimetria in fondo alla pagina o i pulsanti direzionali.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-stone-800 text-sm mb-6">
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Atrio</span>
+            <span>L'Italia divisa dopo il Congresso di Vienna del 1815.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 1</span>
+            <span>La Restaurazione e i primi tentativi di rivolta.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 2</span>
+            <span>Giuseppe Mazzini e l'alternativa democratica.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 3</span>
+            <span>La diplomazia di Cavour e le guerre d'indipendenza.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 4</span>
+            <span>Garibaldi, la spedizione dei Mille e le rivolte contadine.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 5</span>
+            <span>La nascita del Regno d'Italia (1861) e l'incontro di Teano.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Sala 6</span>
+            <span>La presa di Roma (1870) e il compimento dell'Unità.</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="bg-red-900 text-amber-100 font-bold px-2 py-0.5 rounded text-xs mt-0.5 font-title">Arte/Cul</span>
+            <span>Cultura ed estetica: Hayez, il Gattopardo, la satira e la Legge Pica.</span>
+          </div>
+        </div>
+        <div class="text-center">
+          <button onclick="closeModal('modal-guida')" class="btn-ottocento px-6 py-2.5 rounded shadow-lg text-sm">
+            Inizia la Visita
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- STATO DELL'APPLICAZIONE ---
+    const state = {
+      currentPage: 'welcome', // welcome, atrio, sala1, sala2, sala3, sala4, sala5, sala6, cultura, finale
+      audioPlaying: false,
+      selectedState: null, // Per l'Atrio (Mappa interattiva)
+      selectedExplorer: 'cavour', // Per Sala 2 (Mazzini vs Garibaldi vs Cavour)
+      quizRivoluzionarioResult: null, // Per il test psicologico
+      quizGeneraleIndex: 0,
+      quizGeneraleRisposte: [],
+      quizGeneraleMostraSpiegazione: false,
+      
+      // --- STATO DEL SIMULATORE TATTICO DEI MILLE (SALA 4) ---
+      simulator: {
+        step: 0, // 0 = non iniziato, 1 = Quarto, 2 = Marsala, 3 = Calatafimi, 4 = Palermo, 5 = Conclusione
+        morale: 100,
+        soldati: 1089,
+        picciotti: 0,
+        territorio: 0,
+        status: 'playing', // 'playing', 'win_historical', 'win_republic', 'gameover'
+        log: ["La spedizione è pronta a salpare da Quarto. Prendi o comando."]
+      }
+    };
+
+    const pagine = [
+      { id: 'welcome', label: 'Ingresso' },
+      { id: 'atrio', label: 'Atrio: Italia 1815' },
+      { id: 'sala1', label: '1. Restaurazione' },
+      { id: 'sala2', label: '2. Mazzini e Idee' },
+      { id: 'sala3', label: '3. Le Guerre' },
+      { id: 'sala4', label: '4. I Mille' },
+      { id: 'sala5', label: '5. Proclamazione' },
+      { id: 'sala6', label: '6. Roma Capitale' },
+      { id: 'cultura', label: 'Spazio Cultura e Sociale' },
+      { id: 'finale', label: 'Salone d\'Onore' }
+    ];
+
+    // --- CONTROLLO MULTIMEDIALE AUDIO CON RIPRODUZIONE FALLBACK ---
+    let audioElement = null;
+    let audioContext = null;
+    let audioTimer = null;
+    let activeOscillator = null;
+    let useSynthesizerFallback = false; // Attivato automaticamente se il file audio fallisce a caricare
+
+    // Note e frequenze dell'Inno di Mameli (Fratelli d'Italia) in Sol Maggiore per il sintetizzatore di riserva
+    let songNotes = [
+      { f: 293.66, d: 0.4 }, { f: 392.00, d: 0.6 }, { f: 392.00, d: 0.2 }, { f: 392.00, d: 0.2 },
+      { f: 392.00, d: 0.2 }, { f: 392.00, d: 0.6 }, { f: 440.00, d: 0.2 }, { f: 493.88, d: 0.6 },
+      { f: 493.88, d: 0.2 }, { f: 493.88, d: 0.2 }, { f: 493.88, d: 0.2 }, { f: 493.88, d: 0.6 },
+      { f: 440.00, d: 0.2 }, { f: 392.00, d: 0.4 }, { f: 440.00, d: 0.4 }, { f: 493.88, d: 0.4 },
+      { f: 392.00, d: 0.4 }, { f: 440.00, d: 0.4 }, { f: 440.00, d: 0.4 }, { f: 293.66, d: 0.6 },
+      { f: 293.66, d: 0.2 }, { f: 440.00, d: 0.6 }, { f: 440.00, d: 0.2 }, { f: 440.00, d: 0.2 },
+      { f: 440.00, d: 0.2 }, { f: 440.00, d: 0.6 }, { f: 493.88, d: 0.2 }, { f: 523.25, d: 0.6 },
+      { f: 523.25, d: 0.2 }, { f: 523.25, d: 0.2 }, { f: 523.25, d: 0.2 }, { f: 523.25, d: 0.6 },
+      { f: 493.88, d: 0.2 }, { f: 440.00, d: 0.4 }, { f: 493.88, d: 0.4 }, { f: 523.25, d: 0.4 },
+      { f: 440.00, d: 0.4 }, { f: 493.88, d: 0.4 }, { f: 493.88, d: 0.4 }, { f: 392.00, d: 0.6 },
+      { f: 392.00, d: 0.2 }, { f: 392.00, d: 0.4 }, { f: 440.00, d: 0.4 }, { f: 493.88, d: 0.4 },
+      { f: 523.25, d: 0.4 }, { f: 587.33, d: 0.8 }, { f: 293.66, d: 0.4 }, { f: 392.00, d: 0.4 },
+      { f: 440.00, d: 0.4 }, { f: 493.88, d: 0.4 }, { f: 523.25, d: 0.4 }, { f: 587.33, d: 0.8 },
+      { f: 587.33, d: 0.3 }, { f: 587.33, d: 0.3 }, { f: 587.33, d: 0.3 }, { f: 587.33, d: 0.3 },
+      { f: 587.33, d: 0.4 }, { f: 523.25, d: 0.2 }, { f: 493.88, d: 0.4 }, { f: 440.00, d: 0.2 },
+      { f: 392.00, d: 0.6 }, { f: 392.00, d: 0.2 }, { f: 392.00, d: 0.4 }, { f: 440.00, d: 0.4 },
+      { f: 493.88, d: 0.4 }, { f: 440.00, d: 0.4 }, { f: 392.00, d: 0.6 }, { f: 293.66, d: 0.2 },
+      { f: 392.00, d: 0.6 }, { f: 392.00, d: 0.2 }, { f: 440.00, d: 0.4 }, { f: 440.00, d: 0.4 },
+      { f: 587.33, d: 0.4 }, { f: 587.33, d: 0.4 }
+    ];
+    let noteIndex = 0;
+
+    function playInnoOfMameli() {
+      if (!state.audioPlaying) {
+        stopAllAudio();
+        return;
+      }
+
+      // Se il sintetizzatore di riserva è attivo, esegue la sua logica nota-per-nota
+      if (useSynthesizerFallback) {
+        playSynthesizerNote();
+        return;
+      }
+
+      // Altrimenti tenta il caricamento dell'elemento audio reale
+      if (!audioElement) {
+        audioElement = new Audio("23-Italia.mp3");
+        audioElement.loop = true;
+
+        // Gestione automatica dell'errore di caricamento
+        audioElement.onerror = function() {
+          console.warn("File audio 23-Italia.mp3 non trovato o non supportato. Attivazione del sintetizzatore di emergenza.");
+          activateFallback();
+        };
+      }
+      
+      audioElement.play().catch(e => {
+        console.warn("Riproduzione audio bloccata o fallita. Uso del sintetizzatore di fallback: ", e);
+        activateFallback();
+      });
+    }
+
+    function activateFallback() {
+      useSynthesizerFallback = true;
+      if (audioElement) {
+        audioElement.pause();
+      }
+      if (state.audioPlaying) {
+        playSynthesizerNote();
+      }
+    }
+
+    function playSynthesizerNote() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (!state.audioPlaying) return;
+
+      if (noteIndex >= songNotes.length) {
+        noteIndex = 0; // Ricomincia da capo
+      }
+
+      const note = songNotes[noteIndex];
+      stopActiveOscillator();
+
+      const osc = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      osc.type = 'triangle'; // Suono stile fiati ottocenteschi dolce
+      osc.frequency.setValueAtTime(note.f, audioContext.currentTime);
+
+      gainNode.gain.setValueAtTime(0.0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.18, audioContext.currentTime + 0.04);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + note.d - 0.03);
+
+      osc.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      osc.start();
+      osc.stop(audioContext.currentTime + note.d);
+
+      activeOscillator = osc;
+      noteIndex++;
+
+      audioTimer = setTimeout(playSynthesizerNote, note.d * 1000);
+    }
+
+    // Ferma l'oscillatore attualmente attivo
+    function stopActiveOscillator() {
+      if (activeOscillator) {
+        try {
+          activeOscillator.stop();
+        } catch (e) {}
+          activeOscillator = null;
+      }
+    }
+
+    function stopAllAudio() {
+      clearTimeout(audioTimer);
+      stopActiveOscillator();
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+      }
+    }
+
+    // --- DICHIARAZIONE DELLE FUNZIONI GLOBALI (ROBUSTEZZA TOTALE CONTRO I REFERENCEERROR) ---
+    window.goToPage = function(pageId) {
+      if (pageId === 'guida') {
+        window.openModal('modal-guida');
+        return;
+      }
+      state.currentPage = pageId;
+      render();
+    };
+
+    window.closeModal = function(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+      }
+    };
+
+    window.openModal = function(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
+    window.selectState = function(key) {
+      state.selectedState = key;
+      render();
+    };
+
+    window.selectExplorer = function(key) {
+      state.selectedExplorer = key;
+      render();
+    };
+
+    window.startSimulator = function() {
+      state.simulator = {
+        step: 1,
+        morale: 100,
+        soldati: 1089,
+        picciotti: 0,
+        territorio: 5,
+        status: 'playing',
+        log: ["Maggio 1860: Salpiamo di notte da Quarto a bordo dei piroscafi Piemonte e Lombardo."]
+      };
+      render();
+    };
+
+    window.processSimulatorChoice = function(choice) {
+      const sim = state.simulator;
+      
+      if (sim.step === 1) {
+        if (choice === 'A') {
+          sim.morale += 10;
+          sim.log.push("Scelta: Salpare in segreto eludendo o controllo preventivo di Cavour. Morale alto, ma cresce la diffidenza diplomatica del Piemonte.");
+        } else {
+          sim.soldati += 150;
+          sim.morale -= 15;
+          sim.log.push("Scelta: Negoziare con la Società Nazionale. Otteniamo armi moderne ma accettiamo la subordinazione tattica all'egemonia sabauda.");
+        }
+        sim.step = 2;
+        sim.territorio = 15;
+      } 
+      else if (sim.step === 2) {
+        if (choice === 'A') {
+          sim.picciotti += 250;
+          sim.morale += 5;
+          sim.log.push("Scelta: Sbarcare a Marsala protetti indirettamente dalle navi inglesi. I borbonici esitano, mentre le prime bande di contadini siciliani si uniscono a noi.");
+        } else {
+          sim.soldati -= 120;
+          sim.morale -= 10;
+          sim.log.push("Scelta: Sbarco clandestino in una cala isolata. Le scogliere danneggiano i piroscafi e perdiamo preziose munizioni nella risacca.");
+        }
+        sim.step = 3;
+        sim.territorio = 30;
+      }
+      else if (sim.step === 3) {
+        if (choice === 'A') {
+          sim.morale += 25;
+          sim.soldati -= 180;
+          sim.picciotti += 500;
+          sim.log.push("Scelta: Assalto frontale alla baionetta a Calatafimi! Garibaldi pronuncia o celebre motto. La fulminea vittoria distrugge o mito dell'invincibilità borbonica.");
+        } else {
+          sim.morale -= 30;
+          sim.soldati -= 50;
+          sim.log.push("Scelta: Manovra di ripiegamento strategico. La ritirata mina l'entusiasmo patriottico e spinge i picciotti a ritirare o loro appoggio.");
+        }
+        sim.step = 4;
+        sim.territorio = 60;
+      }
+      else if (sim.step === 4) {
+        if (choice === 'A') {
+          sim.picciotti += 1000;
+          sim.morale += 15;
+          sim.soldati -= 80;
+          sim.log.push("Scelta: Infiltrare la propaganda a Palermo e coordinare l'insurrezione popolare. Le barricate urbane paralizzano l'esercito regio.");
+        } else {
+          sim.soldati -= 250;
+          sim.morale -= 15;
+          sim.log.push("Scelta: Assedio militare classico delle porte regie. L'artiglieria borbonica decima le camicie rosse prima di capitolare.");
+        }
+        sim.step = 5;
+        sim.territorio = 90;
+      }
+      else if (sim.step === 5) {
+        if (choice === 'A') {
+          sim.status = 'win_historical';
+          sim.territorio = 100;
+          sim.log.push("Bivio Finale: Incontrare Vittorio Emanuele II a Teano e cedere formalmente le conquiste regie. Risoluzione Storica sabauda.");
+        } else {
+          sim.status = 'win_republic';
+          sim.morale += 20;
+          sim.picciotti += 1500;
+          sim.log.push("Bivio Finale: Proseguire la marcia su Roma proclamando l'assemblea costituente repubblicana. Svolta mazziniana rivoluzionaria!");
+        }
+      }
+
+      // Check sconfitta
+      if (sim.morale <= 0 || (sim.soldati + sim.picciotti) <= 100) {
+        sim.status = 'gameover';
+        sim.log.push("SCONFITTA: Mancanza di coesione interna. La spedizione collassa sotto la pressione delle truppe regie.");
+      }
+
+      render();
+    };
+
+    window.gestisciRispostaQuizGenerale = function(idx) {
+      state.quizGeneraleRisposte[state.quizGeneraleIndex] = idx;
+      state.quizGeneraleMostraSpiegazione = true;
+      render();
+    };
+
+    window.avantiQuizGenerale = function() {
+      state.quizGeneraleMostraSpiegazione = false;
+      if (state.quizGeneraleIndex < domandeQuizGenerale.length - 1) {
+        state.quizGeneraleIndex++;
+      } else {
+        state.quizGeneraleIndex = 0;
+        state.quizGeneraleRisposte = [];
+      }
+      render();
+    };
+
+    window.toggleAudio = function() {
+      state.audioPlaying = !state.audioPlaying;
+      const btnText = document.getElementById('audio-status');
+      
+      if (state.audioPlaying) {
+        btnText.innerText = "SOSPENDI MUSICA";
+        btnText.parentElement.classList.add('bg-red-900/40', 'border-red-500/50');
+        noteIndex = 0;
+        playInnoOfMameli();
+      } else {
+        btnText.innerText = "RIPRODUCI INNO";
+        btnText.parentElement.classList.remove('bg-red-900/40', 'border-red-500/50');
+        stopAllAudio();
+      }
+    };
+
+    window.submitQuizRivoluzionario = function() {
+      const form = document.getElementById('form-quiz-rivoluzionario');
+      if (!form) return;
+      
+      const fd = new FormData(form);
+      let pMazzini = 0;
+      let pGaribaldi = 0;
+      let pCavour = 0;
+
+      const q1 = fd.get('q1');
+      if (q1 === 'insurrezione') pMazzini += 3;
+      if (q1 === 'esercito') pGaribaldi += 3;
+      if (q1 === 'diplomazia') pCavour += 3;
+
+      const q2 = fd.get('q2');
+      if (q2 === 'repubblica') pMazzini += 3;
+      if (q2 === 'monarchia') pCavour += 2;
+      if (q2 === 'popolo') pGaribaldi += 3;
+
+      const q3 = fd.get('q3');
+      if (q3 === 'esilio') pMazzini += 2;
+      if (q3 === 'action') pGaribaldi += 3;
+      if (q3 === 'tavolo') pCavour += 3;
+
+      if (pCavour >= pMazzini && pCavour >= pGaribaldi) {
+        state.quizRivoluzionarioResult = 'cavour';
+      } else if (pGaribaldi >= pMazzini) {
+        state.quizRivoluzionarioResult = 'garibaldi';
+      } else {
+        state.quizRivoluzionarioResult = 'mazzini';
+      }
+      render();
+    };
+
+    // --- CONTENUTI DELLO STATO SOCIALE / DETTAGLI PREUNITARI ---
+    const statiPreunitari = {
+      sardegna: {
+        nome: "Regno di Sardegna",
+        capitale: "Torino",
+        sovrano: "Casa Savoia (Carlo Alberto / Vittorio Emanuele II)",
+        dettagli: "L'unico Stato pienamente libero dall'influenza austriaca. Sotto la spinta di Cavour, avviò riforme moderne e una politica di libero scambio, diventando o punto di riferimento naturale per guidare l'unificazione d'Italia.",
+        colore: "bg-blue-900/40 border-blue-500"
+      },
+      lombardoveneto: {
+        nome: "Regno Lombardo-Veneto",
+        capitale: "Milano e Venezia",
+        sovrano: "Impero d'Austria (Asburgo)",
+        dettagli: "Una delle regioni più ricche e sviluppate d'Italia, ma sottomessa a un rigido controllo militare e a pesanti tasse da parte dell'Austria. Fu la culla delle rivolte più accese, come le Cinque Giornate di Milano.",
+        colore: "bg-green-900/40 border-green-500"
+      },
+      pontificio: {
+        nome: "Stato Pontificio",
+        capitale: "Roma",
+        sovrano: "Papa Pio IX",
+        dettagli: "Situato nel centro della penisola. Dopo le speranze liberali all'inizio del pontificato di Pio IX (1846-48), lo Stato Pontificio scelse la linea conservatrice, protetto militarmente dalla Francia di Napoleone III.",
+        colore: "bg-yellow-800/40 border-yellow-500"
+      },
+      duesicilie: {
+        nome: "Regno delle Due Sicilie",
+        capitale: "Napoli",
+        sovrano: "Dinastia dei Borbone (Francesco II / Ferdinando II)",
+        dettagli: "Lo Stato più esteso e popoloso prima dell'Unità. Caratterizzato da forti contrasti tra i grandi proprietari terrieri e le costanti rivolte dei contadini e dei separatisti siciliani. Fu conquistato da Garibaldi nel 1860.",
+        colore: "bg-orange-900/40 border-orange-500"
+      },
+      toscana: {
+        nome: "Granducato di Toscana",
+        capitale: "Firenze",
+        sovrano: "Asburgo-Lorena",
+        dettagli: "Famoso per il clima culturale tollerante e moderato. Prese parte alle prime trattative per la nascita di una Lega Doganale commerciale tra i diversi Stati italiani.",
+        colore: "bg-purple-900/40 border-purple-500"
+      },
+      parmamodena: {
+        nome: "Ducati di Parma, Piacenza e Modena",
+        capitale: "Parma / Modena",
+        sovrano: "Dinastie imparentate con gli Asburgo",
+        dettagli: "Piccoli ducati dell'Emilia governati da famiglie reazionarie legate all'Austria. Furono teatri di cospirazioni della Carboneria, tra cui o sacrificio di Ciro Menotti nel 1830.",
+        colore: "bg-indigo-900/40 border-indigo-500"
+      }
+    };
+
+    const domandeQuizGenerale = [
+      {
+        q: "Quale celebre accordo diplomatico strinse Cavour con Napoleone III nel 1858 in preparazione alla seconda guerra d'indipendenza?",
+        op: ["Accordi di Plombières", "Trattato di Villafranca", "Patto di Teano", "Congresso di Vienna"],
+        a: 0,
+        spiegazione: "Gli accordi segreti di Plombières stabilivano l'intervento militare della Francia a fianco del Piemonte in caso di aggressione austriaca, in cambio di Nizza e della Savoia."
+      },
+      {
+        q: "Chi era l'esponente mazziniano che guidò la tragica spedizione di Sapri nel 1857, finita nel sangue?",
+        op: ["Giuseppe Garibaldi", "Carlo Pisacane", "Ciro Menotti", "Nino Bixio"],
+        a: 1,
+        spiegazione: "Carlo Pisacane tentò di scatenare un'insurrezione nel Sud partendo da Sapri con pochi uomini, ma la popolazione locale, ingannata dalla propaganda borbonica, si schierò contro di loro."
+      },
+      {
+        q: "In che anno e in quale celebre dipinto si trova nascosto il messaggio politico d'alleanza antiaustriaca?",
+        op: ["Il Quarto Stato (Pellizza da Volpedo, 1901)", "I Profughi di Parga (Hayez, 1831)", "Il Bacio (Francesco Hayez, 1859)", "La Libertà che guida o popolo (Delacroix, 1830)"],
+        a: 2,
+        spiegazione: "Il Bacio di Hayez del 1859 celebra velatamente l'alleanza tra la Francia (rappresentata dal blu e dal rosso) e l'Italia (rappresentata dal verde della fanciulla)."
+      },
+      {
+        q: "Come reagì Papa Pio IX dopo l'annessione di Roma con la Breccia di Porta Pia nel 1870?",
+        op: ["Accettò un compenso in denaro", "Scomunicò il Re e si dichiarò 'prigioniero in Vaticano'", "Fuggì definitivamente in Francia", "Incoronò Vittorio Emanuele II Re d'Italia"],
+        a: 1,
+        spiegazione: "Il Papa respinse la legge delle Guarentigie, si proclamò prigioniero politico e promulgò o 'Non Expedit', vietando ai cattolici di partecipare alla vita pubblica dello Stato Italiano."
+      }
+    ];
+
+    // --- RENDERING COMPLETO DELLE SCHERMATE DEL MUSEO ---
+    function render() {
+      const container = document.getElementById('viewport');
+      let html = '';
+
+      // Gestione del bottone di navigazione in basso
+      const dotsContainer = document.getElementById('navigation-dots');
+      dotsContainer.innerHTML = pagine.map((p, idx) => {
+        const active = state.currentPage === p.id;
+        return `
+          <button onclick="goToPage('${p.id}')" 
+            class="px-2.5 py-1 text-xs font-title rounded border transition-all ${active ? 'bg-amber-500 text-stone-950 border-amber-400 font-bold' : 'bg-stone-900 text-stone-400 border-stone-800 hover:text-stone-200'}">
+            ${idx}. ${p.label}
+          </button>
+        `;
+      }).join('');
+
+      // PRE-RENDERING DINAMICO PER EVITARE BUG DI COMPILAZIONE DEL COSTRUTTO SWITCH TEMPLATE LITERAL
+      let optionsHtml = '';
+      if (state.currentPage === 'finale') {
+        const currentQuestion = domandeQuizGenerale[state.quizGeneraleIndex];
+        const haRisposto = state.quizGeneraleMostraSpiegazione;
+        optionsHtml = currentQuestion.op.map((o, idx) => {
+          const selezionata = state.quizGeneraleRisposte[state.quizGeneraleIndex] === idx;
+          const corretta = currentQuestion.a === idx;
+          
+          let classeOpzione = "bg-stone-900/60 border-stone-800 text-stone-300 hover:bg-stone-800/80";
+          if (haRisposto) {
+            if (corretta) {
+              classeOpzione = "bg-green-950/40 border-green-500 text-green-200";
+            } else if (selezionata) {
+              classeOpzione = "bg-red-950/40 border-red-500 text-red-200";
+            } else {
+              classeOpzione = "bg-stone-900/30 border-stone-900 text-stone-500 pointer-events-none";
+            }
+          }
+
+          const iconHtml = haRisposto && corretta 
+            ? '<i data-lucide="check" class="w-4 h-4 text-green-500"></i>' 
+            : (haRisposto && selezionata && !corretta 
+                ? '<i data-lucide="x" class="w-4 h-4 text-red-500"></i>' 
+                : '');
+
+          return `
+            <button onclick="gestisciRispostaQuizGenerale(${idx})" ${haRisposto ? 'disabled' : ''} class="w-full text-left p-3 rounded border text-xs sm:text-sm font-body transition-all flex items-center justify-between ${classeOpzione}">
+              <span>${o}</span>
+              ${iconHtml}
+            </button>
+          `;
+        }).join('');
+      }
+
+      let simulatorHtml = '';
+      if (state.currentPage === 'sala4') {
+        const sim = state.simulator;
+        if (sim.step === 0) {
+          simulatorHtml = `
+            <!-- Schermata di avvio -->
+            <div class="text-center py-6">
+              <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="compass" class="w-8 h-8 text-amber-500"></i>
+              </div>
+              <h4 class="font-title text-sm text-stone-200 mb-2">Comanda la Spedizione</h4>
+              <p class="text-xs text-stone-400 mb-6 font-body">Partirai con soli 1089 patrioti. Riuscirai a conquistare o Sud contro un esercito regolare?</p>
+              <button onclick="startSimulator()" class="btn-ottocento px-6 py-2.5 rounded text-xs w-full">
+                Inizia la Spedizione
+              </button>
+            </div>
+          `;
+        } else if (sim.status !== 'playing') {
+          let winLoseHtml = '';
+          if (sim.status === 'win_historical') {
+            winLoseHtml = `
+              <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="crown" class="w-8 h-8 text-green-500"></i>
+              </div>
+              <h4 class="font-title text-lg text-green-400 font-bold">Vittoria Storica Sancita!</h4>
+              <p class="text-xs text-stone-300 font-body leading-relaxed">
+                Hai condotto la spedizione con saggezza politica. Consegnando o meridione a Vittorio Emanuele II a Teano, eviti un sanguinoso scontro civile e fondi o Regno d'Italia!
+              </p>
+            `;
+          } else if (sim.status === 'win_republic') {
+            winLoseHtml = `
+              <div class="w-16 h-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="flag" class="w-8 h-8 text-amber-500"></i>
+              </div>
+              <h4 class="font-title text-lg text-amber-400 font-bold">Finale Alternativo Sbloccato!</h4>
+              <p class="text-xs text-stone-300 font-body leading-relaxed">
+                Hai proclamato la Repubblica del Meridione! Mazzini esulta, ma l'esercito sabaudo si prepara a fermarti con la forza. Hai cambiato o corso della storia!
+              </p>
+            `;
+          } else {
+            winLoseHtml = `
+              <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto">
+                <i data-lucide="skull" class="w-8 h-8 text-red-500"></i>
+              </div>
+              <h4 class="font-title text-lg text-red-500 font-bold">La Spedizione è Fallita</h4>
+              <p class="text-xs text-stone-300 font-body leading-relaxed">
+                Le tue forze si sono disperse o o morale è crollato. La dominazione borbonica prosegue e o sogno dell'Unità si allontana nel tempo.
+              </p>
+            `;
+          }
+
+          simulatorHtml = `
+            <!-- Schermata di Fine Partita -->
+            <div class="text-center py-6 space-y-4 font-body">
+              ${winLoseHtml}
+              <div class="bg-black/50 p-3 rounded text-left border border-stone-800 text-[10px] text-stone-400 font-body max-h-32 overflow-y-auto">
+                <strong>Diario del Generale:</strong>
+                <ul class="list-disc pl-4 space-y-1 mt-1">
+                  ${sim.log.slice(-3).map(l => `<li>${l}</li>`).join('')}
+                </ul>
+              </div>
+              <button onclick="startSimulator()" class="btn-ottocento px-6 py-2.5 rounded text-xs w-full">
+                Riprova la Sfida
+              </button>
+            </div>
+          `;
+        } else {
+          let choiceHtml = '';
+          if (sim.step === 1) {
+            choiceHtml = `
+              <span class="text-[10px] font-title text-amber-500 uppercase block">Passo 1: La Partenza da Quarto</span>
+              <p class="text-xs text-stone-200 font-semibold font-body">Cavour teme incidenti diplomatici. Come finanziamo e salpiamo?</p>
+              <div class="space-y-2">
+                <button onclick="processSimulatorChoice('A')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>A.</strong> Salpa segretamente di notte fuggendo sui piroscafi (+Morale).
+                </button>
+                <button onclick="processSimulatorChoice('B')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>B.</strong> Chiedi fucili e truppe regolari in Piemonte (+Soldati, -Morale).
+                </button>
+              </div>
+            `;
+          } else if (sim.step === 2) {
+            choiceHtml = `
+              <span class="text-[10px] font-title text-amber-500 uppercase block">Passo 2: Lo Sbarco a Marsala</span>
+              <p class="text-xs text-stone-200 font-semibold font-body">Due incrociatori borbonici incrociano la costa. Dove attracchiamo?</p>
+              <div class="space-y-2">
+                <button onclick="processSimulatorChoice('A')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>A.</strong> Attracca nel porto principale sfruttando o blocco navale inglese (+Picciotti).
+                </button>
+                <button onclick="processSimulatorChoice('B')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>B.</strong> Sbarca di notte in una caletta nascosta tra gli scogli (-Soldati).
+                </button>
+              </div>
+            `;
+          } else if (sim.step === 3) {
+            choiceHtml = `
+              <span class="text-[10px] font-title text-amber-500 uppercase block">Passo 3: La Battaglia di Calatafimi</span>
+              <p class="text-xs text-stone-200 font-semibold font-body">Siamo circondati dai Borbonici sulla cima del colle. Ritirarsi o attaccare?</p>
+              <div class="space-y-2">
+                <button onclick="processSimulatorChoice('A')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>A.</strong> Lancia una travolgente carica alla baionetta! (+Morale, +Picciotti, -Soldati).
+                </button>
+                <button onclick="processSimulatorChoice('B')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>B.</strong> Ripiega su posizioni collinari per organizzare la difesa (-Morale, -Picciotti).
+                </button>
+              </div>
+            `;
+          } else if (sim.step === 4) {
+            choiceHtml = `
+              <span class="text-[10px] font-title text-amber-500 uppercase block">Passo 4: La Presa di Palermo</span>
+              <p class="text-xs text-stone-200 font-semibold font-body">La capitale dell'Isola è ben protetta. Come conduciamo l'offensiva?</p>
+              <div class="space-y-2">
+                <button onclick="processSimulatorChoice('A')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>A.</strong> Fomenta l'insurrezione popolare dei cittadini palermitani (+Picciotti).
+                </button>
+                <button onclick="processSimulatorChoice('B')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>B.</strong> Conduci un brutale attacco frontale alle porte cittadine (-Soldati).
+                </button>
+              </div>
+            `;
+          } else {
+            choiceHtml = `
+              <span class="text-[10px] font-title text-amber-500 uppercase block">Passo 5: Il Bivio di Teano</span>
+              <p class="text-xs text-stone-200 font-semibold font-body">Vittorio Emanuele II è alle porte del Sud. Garibaldi, qual è l'obiettivo della tua vita?</p>
+              <div class="space-y-2">
+                <button onclick="processSimulatorChoice('A')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>A.</strong> Stringi la mano al Re e dona le conquiste per unificare l'Italia (Storico).
+                </button>
+                <button onclick="processSimulatorChoice('B')" class="w-full text-left p-2.5 rounded border border-stone-800 bg-stone-900/50 hover:bg-stone-800 text-xs font-body text-stone-300">
+                  <strong>B.</strong> Dichiara la Repubblica Autonoma del Sud e segui gli ideali di mazzini (Alternativo).
+                </button>
+              </div>
+            `;
+          }
+
+          simulatorHtml = `
+            <!-- Schermata di Gioco Attivo -->
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-2 text-[11px] font-title mb-4">
+                <div class="bg-stone-950 p-2 rounded border border-stone-800">
+                  <div class="flex justify-between mb-1">
+                    <span class="text-stone-400 flex items-center gap-1"><i data-lucide="heart" class="w-3.5 h-3.5 text-red-500"></i> Morale</span>
+                    <span class="text-stone-200 font-bold">${sim.morale}%</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-red-500 h-full" style="width: ${sim.morale}%"></div>
+                  </div>
+                </div>
+                <div class="bg-stone-950 p-2 rounded border border-stone-800">
+                  <div class="flex justify-between mb-1">
+                    <span class="text-stone-400 flex items-center gap-1"><i data-lucide="swords" class="w-3.5 h-3.5 text-amber-500"></i> Soldati</span>
+                    <span class="text-stone-200 font-bold">${sim.soldati}</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-amber-500 h-full" style="width: ${Math.min((sim.soldati/1200)*100, 100)}%"></div>
+                  </div>
+                </div>
+                <div class="bg-stone-950 p-2 rounded border border-stone-800">
+                  <div class="flex justify-between mb-1">
+                    <span class="text-stone-400 flex items-center gap-1"><i data-lucide="users" class="w-3.5 h-3.5 text-green-500"></i> Picciotti</span>
+                    <span class="text-stone-200 font-bold">+${sim.picciotti}</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-green-500 h-full" style="width: ${Math.min((sim.picciotti/1500)*100, 100)}%"></div>
+                  </div>
+                </div>
+                <div class="bg-stone-950 p-2 rounded border border-stone-800">
+                  <div class="flex justify-between mb-1">
+                    <span class="text-stone-400 flex items-center gap-1"><i data-lucide="map" class="w-3.5 h-3.5 text-blue-500"></i> Conquistato</span>
+                    <span class="text-stone-200 font-bold">${sim.territorio}%</span>
+                  </div>
+                  <div class="w-full bg-stone-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-blue-500 h-full" style="width: ${sim.territorio}%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-stone-950/80 p-3 rounded border border-stone-800 text-[10px] font-body text-stone-300 italic min-h-[60px] max-h-[80px] overflow-y-auto">
+                <strong>Ultimi eventi:</strong>
+                <p class="mt-1">${sim.log[sim.log.length - 1]}</p>
+              </div>
+              <div class="bg-stone-950/40 p-4 rounded border border-stone-800 space-y-3">
+                ${choiceHtml}
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      switch (state.currentPage) {
+        case 'welcome':
+          html = `
+            <div class="text-center max-w-4xl mx-auto py-12 px-6 bg-black/50 border border-yellow-900/30 rounded-lg shadow-2xl fade-enter fade-enter-active" style="transition: all 1s ease;">
+              <div class="mb-6 flex justify-center">
+                <div class="relative w-48 h-12 flex items-center justify-center">
+                  <!-- Simulazione bandiera tricolore logorata dal tempo -->
+                  <div class="absolute inset-0 flex rounded overflow-hidden opacity-80 border border-white/10 shadow-lg">
+                    <div class="w-1/3 bg-green-800"></div>
+                    <div class="w-1/3 bg-stone-100 flex items-center justify-center text-[10px] font-bold text-blue-900">SAVOIA</div>
+                    <div class="w-1/3 bg-red-800"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <h1 class="font-title text-4xl sm:text-6xl text-amber-500 font-extrabold tracking-wider leading-none mb-4">
+                IL RISORGIMENTO
+              </h1>
+              <h2 class="font-title text-xl sm:text-2xl text-stone-300 tracking-widest mb-2">
+                DALLA RESTAURAZIONE ALL'UNITÀ D'ITALIA
+              </h2>
+              
+              <p class="text-xs font-title text-stone-400 uppercase tracking-widest mb-8">
+                Progetto storiografico multimediale a cura di:<br>
+                <span class="text-amber-500 font-bold">Bramucci Pietro, Bruni Filippo, Mazzamurro Thomas, Taglioni Thomas, Ubertini Matteo</span>
+              </p>
+              
+              <div class="h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent w-2/3 mx-auto mb-8"></div>
+
+              <p class="font-body text-stone-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+                Benvenuto nel primo museo storico ottocentesco digitale. Un percorso educativo, interattivo e multimediale che unisce documenti originali, arte satirica, battaglie militari ed una profonda riflessione sociale sulle tappe dell'Unità d'Italia.
+              </p>
+
+              <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="goToPage('atrio')" class="btn-ottocento px-8 py-3 rounded-md text-base shadow-xl flex items-center justify-center gap-2">
+                  <span>VARCA L'INGRESSO</span>
+                  <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <button onclick="openModal('modal-guida')" class="bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 font-title px-6 py-3 rounded-md text-sm transition-all">
+                  GUIDA DELLE SALE
+                </button>
+              </div>
+
+              <div class="mt-12 text-stone-500 text-xs font-title tracking-wider flex justify-center gap-8">
+                <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-4 h-4 text-amber-600"></i> ATRIO INTERATTIVO</span>
+                <span class="flex items-center gap-1"><i data-lucide="brain-circuit" class="w-4 h-4 text-amber-600"></i> TEST ATTITUDINALE</span>
+                <span class="flex items-center gap-1"><i data-lucide="music" class="w-4 h-4 text-amber-600"></i> CANTI D'EPOCA</span>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'atrio':
+          html = `
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <!-- Pannello sinistro: mappa interattiva -->
+              <div class="lg:col-span-7 bg-black/40 border border-yellow-900/20 p-6 rounded-lg shadow-xl">
+                <h2 class="font-title text-2xl text-amber-500 font-bold mb-2">ATRIO: LA PENISOLA NEL 1815</h2>
+                <p class="text-sm text-stone-400 mb-6 font-body">
+                  Clicca su uno degli Stati sulla mappa per leggerne la situazione politica, i sovrani e le influenze straniere.
+                </p>
+
+                <!-- Mappa stilizzata basata su griglia CSS interattiva -->
+                <div class="grid grid-cols-3 gap-3 max-w-md mx-auto mb-6">
+                  <button onclick="selectState('sardegna')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'sardegna' ? 'bg-blue-900/40 border-blue-500 ring-2 ring-blue-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-blue-400">Piemonte & Sardegna</span>
+                    <span class="font-semibold text-sm">Regno di Sardegna</span>
+                  </button>
+                  <button onclick="selectState('lombardoveneto')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'lombardoveneto' ? 'bg-green-900/40 border-green-500 ring-2 ring-green-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-green-400">Sotto il giogo austriaco</span>
+                    <span class="font-semibold text-sm">Lombardo-Veneto</span>
+                  </button>
+                  <button onclick="selectState('parmamodena')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'parmamodena' ? 'bg-indigo-900/40 border-indigo-500 ring-2 ring-indigo-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-indigo-400">Ducati emiliani</span>
+                    <span class="font-semibold text-sm">Parma & Modena</span>
+                  </button>
+                  <button onclick="selectState('toscana')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'toscana' ? 'bg-purple-900/40 border-purple-500 ring-2 ring-purple-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-purple-400">Granducato</span>
+                    <span class="font-semibold text-sm">Granducato di Toscana</span>
+                  </button>
+                  <button onclick="selectState('pontificio')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'pontificio' ? 'bg-yellow-900/40 border-yellow-500 ring-2 ring-yellow-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-yellow-400">Stato del Papa</span>
+                    <span class="font-semibold text-sm">Stato Pontificio</span>
+                  </button>
+                  <button onclick="selectState('duesicilie')" class="p-4 rounded border text-left transition-all hover:scale-105 ${state.selectedState === 'duesicilie' ? 'bg-orange-900/40 border-orange-500 ring-2 ring-orange-500' : 'bg-stone-900/60 border-stone-800 text-stone-300'}">
+                    <span class="font-title block text-xs text-orange-400">Sud & Sicilia</span>
+                    <span class="font-semibold text-sm">Regno delle Due Sicilie</span>
+                  </button>
+                </div>
+
+                <div class="bg-stone-950 p-4 rounded border border-stone-800">
+                  <h4 class="font-title text-stone-400 text-xs uppercase mb-2">Confronto Territoriale Primario:</h4>
+                  <div class="flex items-center justify-between text-xs text-stone-300 font-body">
+                    <span>Frammentazione doganale: <strong class="text-amber-500">7 mercati diversi</strong></span>
+                    <span>Modello economico asburgico: <strong class="text-green-500">Integrazione con Vienna</strong></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pannello destro: visualizzazione stato selezionato -->
+              <div class="lg:col-span-5 flex flex-col gap-6">
+                ${state.selectedState ? `
+                  <div class="pergamena p-6 rounded-lg border-2 border-amber-600/50 shadow-2xl">
+                    <div class="flex items-center gap-2 mb-4">
+                      <i data-lucide="shield" class="w-6 h-6 text-red-900"></i>
+                      <h3 class="font-title text-2xl text-red-950 font-bold leading-tight">${statiPreunitari[state.selectedState].nome}</h3>
+                    </div>
+                    <div class="space-y-3 text-stone-900 text-sm font-body">
+                      <p><strong>Capitale:</strong> ${statiPreunitari[state.selectedState].capitale}</p>
+                      <p><strong>Sovrano principale:</strong> ${statiPreunitari[state.selectedState].sovrano}</p>
+                      <div class="h-[1px] bg-amber-950/20 my-2"></div>
+                      <p class="leading-relaxed text-sm italic">"${statiPreunitari[state.selectedState].dettagli}"</p>
+                    </div>
+                  </div>
+                ` : `
+                  <div class="bg-stone-900/40 border border-stone-800 rounded-lg p-8 text-center text-stone-400 flex flex-col items-center justify-center min-h-[250px]">
+                    <i data-lucide="pointer" class="w-12 h-12 text-amber-500/50 mb-4 animate-bounce"></i>
+                    <p class="font-title text-sm tracking-wider">SELEZIONA UNO STATO SULLA MAPPA</p>
+                    <p class="text-xs text-stone-500 mt-2 font-body">Analizza i confini e le barriere doganali commerciali prima delle guerre d'indipendenza.</p>
+                  </div>
+                `}
+
+                <!-- Mini-Quiz introduttivo rapido -->
+                <div class="bg-red-950/20 border border-red-900/30 p-6 rounded-lg">
+                  <h3 class="font-title text-sm text-red-400 mb-2 tracking-widest uppercase">La questione dell'indipendenza</h3>
+                  <p class="text-xs text-stone-300 mb-4 font-body leading-relaxed">"L'Italia non era mai stata uno Stato unitario, eppure esisteva un'idea d'Italia radicata nella cultura letteraria, linguistica ed economica da secoli..."</p>
+                  <button onclick="goToPage('sala1')" class="btn-ottocento w-full py-2.5 rounded text-xs">
+                    Entra in Sala 1: Restaurazione
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala1':
+          html = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 1 — IL CONGRESSO DI VIENNA</span>
+                <h2 class="font-header text-3xl sm:text-4xl text-stone-100 font-bold leading-tight mb-4">La Restaurazione dei Sovrani Assoluti</h2>
+                
+                <p class="text-sm sm:text-base text-stone-300 leading-relaxed mb-6 font-body">
+                  Con la fine di Napoleone, le potenze della Santa Alleanza imposero nel 1815 il principio di <strong>Legittimismo</strong>. L'obiettivo era rimettere sui troni i vecchi sovrani assoluti, ignorando le richieste di libertà e indipendenza dei popoli. L'Italia fu divisa in sette Stati, quasi tutti sottomessi all'influenza dell'Austria. Il primo ministro austriaco Metternich definì l'Italia una <em>"semplice espressione geografica"</em>. Per combattere questo rigido controllo, nacquero società segrete come la Carboneria, protagoniste dei primi moti di rivolta nel 1820 e nel 1830.
+                </p>
+
+                <div class="bg-black/40 border border-yellow-900/20 p-4 rounded-lg mb-6">
+                  <h4 class="font-title text-amber-500 text-xs tracking-wider uppercase mb-2">Parere dello storico (Eric Hobsbawm):</h4>
+                  <p class="text-xs text-stone-400 font-body italic">
+                    "I moti risorgimentali non furono ribellioni isolate, ma parte di un grande movimento europeo in cui la nascente borghesia lottava contro il ritorno all'assolutismo della Restaurazione."
+                  </p>
+                </div>
+
+                <div class="flex gap-4">
+                  <button onclick="goToPage('atrio')" class="text-xs font-title border border-stone-700 px-4 py-2.5 rounded hover:bg-stone-800 text-stone-300 transition-all">
+                    Indietro
+                  </button>
+                  <button onclick="goToPage('sala2')" class="btn-ottocento px-6 py-2.5 rounded text-xs">
+                    Avanti: Giuseppe Mazzini
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <div class="quadro-cornice overflow-hidden rounded bg-black">
+                  <img src="https://cdn.studenti.stbm.it/images/2016/10/20/congresso-di-vienna-orig.jpeg" alt="Il Congresso di Vienna" class="w-full h-64 object-cover opacity-80 hover:opacity-100 transition-all">
+                  <div class="p-3 bg-stone-950 border-t border-stone-800 text-[11px] text-stone-400 italic">
+                    Il Congresso di Vienna (1815). I rappresentanti delle potenze europee si spartiscono l'Europa a tavolino cercando di fermare le idee della Rivoluzione Francese.
+                  </div>
+                </div>
+
+                <div class="bg-stone-900/50 border border-stone-800 p-4 rounded">
+                  <h4 class="font-title text-stone-300 text-xs mb-1">Il limite della Carboneria:</h4>
+                  <p class="text-xs text-stone-400 leading-relaxed font-body">
+                    La segretezza assoluta impediva o coinvolgimento del popolo. Questo portò al fallimento delle rivolte del 1821 in Piemonte (segnate dall'indecisione di Carlo Alberto, detto o \"Re Tentenna\") e della cospirazione di Ciro Menotti a Modena nel 1830.
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala2':
+          html = `
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <!-- Sezione sinistra: Dettagli ideologici su Mazzini -->
+              <div class="lg:col-span-7 space-y-6">
+                <div>
+                  <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 2 — IL PENSIERO DI GIUSEPPE MAZZINI</span>
+                  <h2 class="font-header text-3xl text-stone-100 font-bold">La Giovine Italia: Il Sogno della Repubblica</h2>
+                </div>
+
+                <p class="text-sm text-stone-300 leading-relaxed font-body">
+                  Nato a Genova nel 1805, Giuseppe Mazzini comprese che le società segrete fallivano perché il popolo non ne conosceva gli scopi. Nel 1831 fondò la <strong>Giovine Italia</strong>. Il suo programma era trasparente e diffuso apertamente: l'Italia doveva diventare una, indipendente, libera e repubblicana. Mazzini credeva nella partecipazione di tutti i cittadini alla rivoluzione nazionale, unendo alla lotta politica una profonda spinta spirituale e ideale.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="bg-stone-900/60 border border-amber-500/20 p-4 rounded-lg">
+                    <span class="text-amber-500 font-title text-xs tracking-wider block mb-1">1. DIO E POPOLO</span>
+                    <p class="text-xs text-stone-400 font-body">
+                      La Storia ha un preciso scopo morale. Ogni popolo ha la missione divina di darsi da fare per rendere libera e unita la propria patria.
+                    </p>
+                  </div>
+                  <div class="bg-stone-900/60 border border-amber-500/20 p-4 rounded-lg">
+                    <span class="text-amber-500 font-title text-xs tracking-wider block mb-1">2. L'ITALIA REPUBLICA</span>
+                    <p class="text-xs text-stone-400 font-body">
+                      Rifiuto totale di regni e duchi. Mazzini era contrario al federalismo, ritenendo che solo uno Stato unitario forte potesse sopravvivere.
+                    </p>
+                  </div>
+                  <div class="bg-stone-900/60 border border-amber-500/20 p-4 rounded-lg">
+                    <span class="text-amber-500 font-title text-xs tracking-wider block mb-1">3. PENSIERO E AZIONE</span>
+                    <p class="text-xs text-stone-400 font-body">
+                      Le teorie politiche non valgono nulla se non si traducono in azioni concrete. Per questo organizzò costanti tentativi di insurrezione.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Strumento Interattivo: Mazzini vs Cavour vs Garibaldi -->
+                <div class="bg-black/50 border border-yellow-900/30 p-5 rounded-lg">
+                  <h3 class="font-title text-sm text-amber-500 mb-3 tracking-wider uppercase">Tavola di Confronto dei Protagonisti (Interattiva)</h3>
+                  <div class="flex gap-2 mb-4">
+                    <button onclick="selectExplorer('mazzini')" class="px-3 py-1.5 rounded text-xs font-title border ${state.selectedExplorer === 'mazzini' ? 'bg-amber-500 text-stone-950 border-amber-400' : 'bg-stone-900 text-stone-400 border-stone-800'}">MAZZINI (Idealista)</button>
+                    <button onclick="selectExplorer('garibaldi')" class="px-3 py-1.5 rounded text-xs font-title border ${state.selectedExplorer === 'garibaldi' ? 'bg-amber-500 text-stone-950 border-amber-400' : 'bg-stone-900 text-stone-400 border-stone-800'}">GARIBALDI (Azione)</button>
+                    <button onclick="selectExplorer('cavour')" class="px-3 py-1.5 rounded text-xs font-title border ${state.selectedExplorer === 'cavour' ? 'bg-amber-500 text-stone-950 border-amber-400' : 'bg-stone-900 text-stone-400 border-stone-800'}">CAVOUR (Diplomazia)</button>
+                  </div>
+
+                  <div class="text-xs text-stone-300 bg-stone-950 p-4 rounded border border-stone-800 space-y-2 font-body">
+                    ${state.selectedExplorer === 'mazzini' ? `
+                      <p><strong>Metodo:</strong> Insurrezione popolare guidata da ideali purissimi, rifiutando patti con re o potenze straniere.</p>
+                      <p><strong>Obiettivo:</strong> Repubblica Unita d'Italia, democratica e governata dal popolo.</p>
+                      <p class="italic text-stone-500">"Il popolo deve essere educato e chiamato alle armi attraverso un programma chiaro e condiviso."</p>
+                    ` : state.selectedExplorer === 'garibaldi' ? `
+                      <p><strong>Metodo:</strong> Azione militare sul campo con truppe volontarie (le famose Camicie Rosse), guidate dal carisma personale.</p>
+                      <p><strong>Obiettivo:</strong> Unificare l'Italia il prima possibile, accettando anche l'aiuto dei Savoia pur di raggiungere lo scopo.</p>
+                      <p class="italic text-stone-500">"Eroe dei due mondi: un uomo d'azione eccezionale, pronto a combattere ovunque ci fosse un popolo oppresso."</p>
+                    ` : `
+                      <p><strong>Metodo:</strong> Trattative diplomatiche, alleanze con Stati potenti (come la Francia) e modernizzazione economica del Piemonte.</p>
+                      <p><strong>Obiettivo:</strong> Allargare o Regno di Sardegna (Savoia) al Nord Italia, garantendo stabilità ed evitando rivoluzioni popolari.</p>
+                      <p class="italic text-stone-500">"Grande tessitore politico: diffidava dei repubblicani radicali e preferiva le riforme graduali e la Realpolitik."</p>
+                    `}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sezione destra: Test psicologico "Che rivoluzionario saresti?" -->
+              <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="pergamena p-6 rounded-lg border-2 border-amber-600/40 shadow-xl text-stone-900">
+                  <h3 class="font-title text-lg text-red-950 font-bold mb-4 flex items-center gap-1">
+                    <i data-lucide="brain" class="w-5 h-5 text-red-900"></i>
+                    Test: Che rivoluzionario saresti?
+                  </h3>
+                  
+                  ${state.quizRivoluzionarioResult ? `
+                    <div class="text-center py-4 space-y-4 font-body">
+                      <span class="text-xs font-title text-stone-500 uppercase block">Il tuo Profilo Risorgimentale:</span>
+                      
+                      ${state.quizRivoluzionarioResult === 'mazzini' ? `
+                        <h4 class="font-title text-2xl text-red-900 font-bold">Giuseppe Mazzini</h4>
+                        <p class="text-sm leading-relaxed">
+                          Sei un idealista puro. Pensi che i sogni di libertà non debbano mai scendere a compromessi con re o politici opportunisti, e che o popolo debba muoversi unito!
+                        </p>
+                      ` : state.quizRivoluzionarioResult === 'garibaldi' ? `
+                        <h4 class="font-title text-2xl text-red-900 font-bold">Giuseppe Garibaldi</h4>
+                        <p class="text-sm leading-relaxed">
+                          Sei un uomo d'azione ed entusiasmo. Combatti sul campo con passione e sei pronto a collaborare con chiunque condivida o tuo stesso obiettivo finale.
+                        </p>
+                      ` : `
+                        <h4 class="font-title text-2xl text-red-900 font-bold">Conte di Cavour</h4>
+                        <p class="text-sm leading-relaxed">
+                          Sei uno stratega realista. Sai che l'indipendenza si ottiene con l'economia, le buone riforme e la diplomazia internazionale, prima ancora che sui campi di battaglia.
+                        </p>
+                      `}
+
+                      <button onclick="state.quizRivoluzionarioResult = null; render();" class="btn-ottocento px-4 py-2 rounded text-xs">
+                        Rifai o Test
+                      </button>
+                    </div>
+                  ` : `
+                    <form id="form-quiz-rivoluzionario" onsubmit="event.preventDefault(); window.submitQuizRivoluzionario();" class="space-y-4 text-xs">
+                      <div>
+                        <p class="font-semibold mb-2">1. Come risolveresti la questione dell'occupazione austriaca in Italia?</p>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q1" value="insurrezione" checked class="mr-2"> Con l'insurrezione popolare preparata ed educando i cittadini.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q1" value="esercito" class="mr-2"> Guidando un gruppo di volontari armati e coraggiosi in battaglia.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q1" value="diplomazia" class="mr-2"> Stringendo alleanze internazionali con potenze estere forti.
+                        </label>
+                      </div>
+
+                      <div class="h-[1px] bg-amber-950/10"></div>
+
+                      <div>
+                        <p class="font-semibold mb-2">2. Quale forma istituzionale dovrebbe assumere l'Italia Unita?</p>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q2" value="repubblica" checked class="mr-2"> Una Repubblica unita e democratica governata dal popolo.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q2" value="monarchia" class="mr-2"> Una Monarchia Costituzionale stabile guidata dai Savoia.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q2" value="popolo" class="mr-2"> Accetterei temporaneamente la monarchia pur di unire la nazione.
+                        </label>
+                      </div>
+
+                      <div class="h-[1px] bg-amber-950/10"></div>
+
+                      <div>
+                        <p class="font-semibold mb-2">3. Di fronte ai costanti fallimenti delle prime rivolte, cosa fai?</p>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q3" value="esilio" checked class="mr-2"> Vado in esilio per pianificare e continuare a diffondere le mie idee.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q3" value="action" class="mr-2"> Vado a combattere per la libertà in altri Paesi del mondo in attesa del momento giusto.
+                        </label>
+                        <label class="block mb-1.5 font-body">
+                          <input type="radio" name="q3" value="tavolo" class="mr-2"> Cambio strategia, cercando un accordo politico con gli Stati alleati.
+                        </label>
+                      </div>
+
+                      <button type="submit" class="btn-ottocento w-full py-2.5 rounded text-xs mt-4">
+                        Calcola o Profilo
+                      </button>
+                    </form>
+                  `}
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala3':
+          html = `
+            <div class="space-y-8">
+              <div>
+                <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 3 — LE GUERRE D'INDIPENDENZA E LA STRATEGIA DI CAVOUR</span>
+                <h2 class="font-header text-3xl sm:text-4xl text-stone-100 font-bold mb-4">La Diplomazia e le Guerre Militari</h2>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                
+                <!-- Sottosezione: Prima Guerra -->
+                <div class="bg-black/40 border border-yellow-900/20 p-6 rounded-lg">
+                  <span class="text-xs font-title text-red-500 uppercase font-semibold">1848 - La Prima Guerra d'Indipendenza</span>
+                  <h3 class="font-header text-xl text-stone-200 mt-1 mb-3">La sconfitta di Carlo Alberto</h3>
+                  <p class="text-xs sm:text-sm text-stone-300 font-body leading-relaxed mb-4">
+                    Nel marzo 1848 Milano insorse contro gli austriaci (le celebri <strong>Cinque Giornate</strong>). Carlo Alberto, re del Piemonte, decise di intervenire per liberare o Nord Italia, avviando la prima guerra d'indipendenza. Inizialmente supportato dagli altri sovrani italiani, rimase poi isolato e fu sconfitto duramente dagli austriaci a Custoza e Novara. Carlo Alberto abdicò in favore del figlio, Vittorio Emanuele II. L'unico elemento positivo che sopravvisse fu lo <strong>Statuto Albertino</strong>, che rimase in vigore come prima Costituzione italiana.
+                  </p>
+                  <div class="bg-stone-950 p-3 rounded text-[11px] text-stone-400 font-body border border-stone-800">
+                    <strong>Estratto dallo Statuto Albertino (1848):</strong> "La Religione Cattolica, Apostolica e Romana è la sola Religione dello Stato. Gli altri culti ora esistenti sono tollerati conformemente alle leggi."
+                  </div>
+                </div>
+
+                <!-- Sottosezione: Seconda Guerra -->
+                <div class="bg-black/40 border border-yellow-900/20 p-6 rounded-lg">
+                  <span class="text-xs font-title text-green-500 uppercase font-semibold">1859 - La Seconda Guerra d'Indipendenza</span>
+                  <h3 class="font-header text-xl text-stone-200 mt-1 mb-3">L'alleanza strategica con la Francia</h3>
+                  <p class="text-xs sm:text-sm text-stone-300 font-body leading-relaxed mb-4">
+                    Il Conte di Cavour capì che il Piemonte da solo non poteva sconfiggere l'Austria. Mandò l'esercito piemontese nella <strong>Guerra di Crimea</strong> per inserire o Piemonte nel gioco della politica europea. Nel 1858 strinse gli accordi segreti di <strong>Plombières</strong> con Napoleone III: la Francia avrebbe aiutato o Piemonte solo se l'Austria avesse attaccato per prima. Cavour provocò l'Austria lungo i confini e, quando questa dichiarò guerra, la Francia scese in campo. Fu una vittoria parziale: il Piemonte ottenne la Lombardia, ma non o Veneto.
+                  </p>
+                  <div class="bg-stone-950 p-3 rounded text-[11px] text-stone-400 font-body border border-stone-800">
+                    <strong>La strategia di Cavour:</strong> "Cavour fu un politico incredibilmente abile: usò la diplomazia internazionale per costringere una superpotenza come la Francia a combattere per la causa italiana."
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Tabella delle Battaglie Principali -->
+              <div class="bg-stone-900/40 border border-stone-800 p-6 rounded-lg">
+                <h3 class="font-title text-lg text-amber-500 mb-4 tracking-wider uppercase">Registro delle Battaglie d'Indipendenza</h3>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-xs text-stone-300 font-body text-left">
+                    <thead>
+                      <tr class="border-b border-stone-700 font-title text-amber-400">
+                        <th class="pb-2">Anno</th>
+                        <th class="pb-2">Battaglie Principali</th>
+                        <th class="pb-2">Guerra d'Indipendenza</th>
+                        <th class="pb-2">Risultato Storico</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-800/50">
+                      <tr>
+                        <td class="py-3">1848</td>
+                        <td>Curtatone, Montanara, Goito, Custoza</td>
+                        <td>Prima Guerra d'Indipendenza</td>
+                        <td class="text-red-400">Sconfitta piemontese, gli austriaci riprendono o controllo del Nord.</td>
+                      </tr>
+                      <tr>
+                        <td class="py-3">1859</td>
+                        <td>Montebello, Magenta, Solferino, S. Martino</td>
+                        <td>Seconda Guerra d'Indipendenza</td>
+                        <td class="text-green-400">Vittoria franco-piemontese: la Lombardia viene unita al Piemonte.</td>
+                      </tr>
+                      <tr>
+                        <td class="py-3">1866</td>
+                        <td>Custoza (terrestre), Lissa (marittima), Bezzecca</td>
+                        <td>Terza Guerra d'Indipendenza</td>
+                        <td class="text-green-400">Grazie all'alleanza con la Prussia contro l'Austria, l'Italia ottiene o Veneto.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala4':
+          html = `
+            <div class="grid cols-1 lg:grid-cols-12 gap-8 items-start">
+              <!-- Dettagli epici sulla Spedizione dei Mille -->
+              <div class="lg:col-span-7 space-y-6">
+                <div>
+                  <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 4 — LA SPEDIZIONE DEI MILLE E LE RIVOLTE CONTADINE</span>
+                  <h2 class="font-header text-3xl text-stone-100 font-bold leading-tight">Garibaldi e l'Iniziativa Popolare (1860)</h2>
+                </div>
+
+                <p class="text-sm text-stone-300 font-body leading-relaxed">
+                  Nel maggio 1860, Giuseppe Garibaldi salpò da Quarto (Genova) con circa mille volontari vestiti con le famose camicie rosse. Sbarcò a Marsala, protetto dalla flotta britannica, e sconfisse l'esercito borbonico in Sicilia grazie alla sua incredibile abilità tattica.
+                </p>
+
+                <!-- Box Analisi Sociale Contadina e Bronte -->
+                <div class="bg-red-950/20 border border-red-900/30 p-5 rounded-lg font-body">
+                  <h3 class="font-title text-sm text-red-400 mb-2 tracking-wider">L'ILLUSIONE DEI CONTADINI E I FATTI DI BRONTE</h3>
+                  <p class="text-xs text-stone-300 leading-relaxed mb-3">
+                    Inizialmente, i contadini siciliani (chiamati <em>"picciotti"</em>) accolsero Garibaldi come un liberatore non solo politico, ma anche sociale, sperando in una riforma agraria che distribuisse le terre dei grandi latifondi. Scoppiarono rivolte contadine molto dure. A <strong>Bronte</strong>, la rivolta degenerò nell'uccisione di alcuni proprietari terrieri. Garibaldi, per non perdere l'appoggio dei nobili e della borghesia liberale necessari per unire l'Italia, decise di reprimere duramente la rivolta. Mandò il suo braccio destro, Nino Bixio, a Bronte per fucilare i capi dei rivoltosi. Fu la fine delle speranze dei contadini siciliani.
+                  </p>
+                  <p class="text-xs text-stone-400 italic">
+                    Nota culturale: I fatti di Bronte sono descritti magistralmente nella celebre novella "Libertà" di Giovanni Verga.
+                  </p>
+                </div>
+
+                <div class="bg-stone-900/50 border border-stone-800 p-4 rounded-lg flex items-center gap-4">
+                  <div class="w-12 h-12 rounded-full bg-red-800 flex items-center justify-center text-amber-100 font-bold text-lg font-title shrink-0">G</div>
+                  <div>
+                    <h4 class="font-title text-stone-300 text-xs uppercase mb-1">Il Telegramma: "OBBEDISCO"</h4>
+                    <p class="text-xs text-stone-400 font-body italic leading-relaxed">
+                      "Nel 1866, durante la terza guerra d'indipendenza, Garibaldi stava conquistando o Trentino. Ricevuto l'ordine del re di fermarsi per motivi diplomatici internazionali, rispose con un famosissimo telegramma di una sola parola: <strong>'Obbedisco'</strong>."
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sezione destra: IL SUPER SIMULATORE INTERATTIVO STRATEGICO -->
+              <div class="lg:col-span-5 space-y-6">
+                <div class="bg-stone-900/60 border border-yellow-900/30 p-6 rounded-lg shadow-xl">
+                  <div class="flex items-center gap-2 mb-3">
+                    <i data-lucide="shield-alert" class="w-5 h-5 text-amber-500 animate-pulse"></i>
+                    <h3 class="font-title text-sm text-amber-500 tracking-widest uppercase">
+                      Simulatore Spedizione dei Mille
+                    </h3>
+                  </div>
+                  
+                  <p class="text-xs text-stone-400 font-body mb-4">
+                    Assumi o ruolo di Garibaldi. Prendi le decisioni giuste, mantieni alto o morale e gestisci le tue forze per compiere l'Unità.
+                  </p>
+
+                  <div id="simulator-container">
+                    ${simulatorHtml}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala5':
+          html = `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 5 — L'INCONTRO DI TEANO E LA PROCLAMAZIONE DEL REGNO</span>
+                <h2 class="font-header text-3xl sm:text-4xl text-stone-100 font-bold mb-4">"Saluto il Primo Re d'Italia!" (1861)</h2>
+                
+                <p class="text-sm sm:text-base text-stone-300 leading-relaxed mb-6 font-body">
+                  Il <strong>26 ottobre 1860</strong> a Teano (Caserta) si compì la tappa decisiva dell'unificazione. Giuseppe Garibaldi, per evitare una guerra civile fratricida tra i suoi volontari e l'esercito sabaudo inviato da Cavour, scelse l'accordo monarchico consegnando le chiavi del Meridione a Vittorio Emanuele II. Il 17 marzo 1861 nacque ufficialmente o Regno d'Italia. Tuttavia, l'estensione immediata delle leggi e delle tasse piemontesi al resto della penisola (il processo noto come <strong>piemontesizzazione</strong>) e la mancanza di una vera riforma agraria aprirono un'immediata frattura sociale ed economica tra Nord e Sud, dando inizio alla complessa <strong>questione meridionale</strong>.
+                </p>
+
+                <p class="text-xs sm:text-sm text-stone-400 mb-6 font-body italic">
+                  Questa unificazione amministrativa centralistica, imposta dall'alto senza coinvolgere politicamente le grandi masse contadine meridionali, fu definita da Antonio Gramsci come una "rivoluzione passiva".
+                </p>
+
+                <div class="flex gap-4">
+                  <button onclick="goToPage('sala4')" class="text-xs font-title border border-stone-700 px-4 py-2.5 rounded hover:bg-stone-800 text-stone-300 transition-all">
+                    Indietro
+                  </button>
+                  <button onclick="goToPage('sala6')" class="btn-ottocento px-6 py-2.5 rounded text-xs">
+                    Avanti: Roma Capitale (1870)
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <div class="quadro-cornice overflow-hidden rounded bg-black">
+                  <img src="https://www.fattiperlastoria.it/wp-content/uploads/2019/10/teano.jpg" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Incontro_di_Teano_-_Sebastiano_De_Albertis.jpg/800px-Incontro_di_Teano_-_Sebastiano_De_Albertis.jpg';" alt="L'Incontro di Teano" class="w-full h-64 object-cover opacity-80 hover:opacity-100 transition-all rounded">
+                  <div class="p-3 bg-stone-950 border-t border-stone-800 text-[11px] text-stone-400 italic">
+                    L'Incontro di Teano (1860). Riproduzione del dipinto di Sebastiano De Albertis che immortala la storica stretta di mano tra Garibaldi e Vittorio Emanuele II.
+                  </div>
+                </div>
+
+                <div class="bg-red-950/20 border border-red-900/30 p-4 rounded text-xs font-body">
+                  <h4 class="font-title text-red-400 uppercase mb-1">Nota critica storiografica:</h4>
+                  <p class="text-stone-300 leading-relaxed">
+                    Al momento della proclamazione del Regno d'Italia (1861), l'unificazione geopolitica era incompleta: o <strong>Veneto</strong> rimaneva sotto il dominio austriaco e o <strong>Lazio con Roma</strong> costituiva ancora un'enclave sotto o controllo papale, difesa dalle truppe francesi di Napoleone III.
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'sala6':
+          html = `
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <!-- Sezione sinistra: Roma Capitale -->
+              <div class="lg:col-span-7 space-y-6">
+                <div>
+                  <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALA 6 — PORTA PIA E IL COMPIMENTO DELL'UNITÀ (1870)</span>
+                  <h2 class="font-header text-3xl text-stone-100 font-bold leading-tight">La Breccia di Porta Pia e la Caduta del Potere Temporale</h2>
+                </div>
+
+                <p class="text-sm text-stone-300 font-body leading-relaxed">
+                  Risolvere la cosiddetta <strong>Questione Romana</strong> richiese l'apertura di una crisi internazionale. Pio IX rifiutava di rinunciare al potere temporale su Roma, difeso dalle truppe francesi. Solo la pesante sconfitta della Francia di Napoleone III contro la Prussia a Sedan (1870) permise all'Italia di agire.
+                </p>
+
+                <p class="text-sm text-stone-300 font-body leading-relaxed">
+                  Il <strong>20 settembre 1870</strong>, i bersaglieri guidati dal generale Cadorna aprirono una breccia nelle mura all'altezza di <strong>Porta Pia</strong>. L'esercito italiano occupò Roma, ponendo fine dopo oltre mille anni allo Stato della Chiesa e permettendo o trasferimento della capitale d'Italia da Firenze a Roma nel 1871.
+                </p>
+
+                <!-- Box Dettagli Storici e Vaticano -->
+                <div class="bg-stone-900/50 border border-stone-800 p-5 rounded-lg space-y-3 font-body">
+                  <h3 class="font-title text-xs text-amber-500 uppercase">La reazione del Papa: o "Non Expedit"</h3>
+                  <p class="text-xs text-stone-400 leading-relaxed">
+                    Rifiutando la Legge delle Guarentigie con cui l'Italia cercava di regolare i rapporti con la Chiesa, Pio IX si dichiarò prigioniero dello Stato italiano. Con la disposizione <strong>Non Expedit (1874)</strong>, vietò categoricamente ai cattolici di partecipare alle elezioni del Regno d'Italia. Questa frattura morale e politica verrà superata solo nel 1929 con la firma dei Patti Lateranensi.
+                  </p>
+                </div>
+
+                <div class="flex gap-4">
+                  <button onclick="goToPage('sala5')" class="text-xs font-title border border-stone-700 px-4 py-2.5 rounded hover:bg-stone-800 text-stone-300 transition-all">
+                    Indietro
+                  </button>
+                  <button onclick="goToPage('cultura')" class="btn-ottocento px-6 py-2.5 rounded text-xs">
+                    Entra nello Spazio Cultura
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sezione destra: Grafica d'epoca della Breccia -->
+              <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="quadro-cornice overflow-hidden rounded bg-black">
+                  <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80" alt="" class="w-full h-64 object-cover opacity-85 hover:opacity-100 transition-all">
+                  <div class="p-3 bg-stone-950 border-t border-stone-800 text-[11px] text-stone-400 italic">
+                    La storica Breccia di Porta Pia (20 Settembre 1870). Ingresso epico dei bersaglieri nella città di Roma.
+                  </div>
+                </div>
+
+                <div class="bg-red-950/20 border border-red-900/30 p-4 rounded text-xs font-body">
+                  <h4 class="font-title text-red-400 uppercase mb-1">La Prima Guerra Mondiale:</h4>
+                  <p class="text-stone-300 leading-relaxed">
+                    Molti storici definiscono la prima guerra mondiale (1915-18) come la "Quarta Guerra d'Indipendenza", poiché completò l'unificazione italiana portando all'annessione di Trento e Trieste.
+                  </p>
+                </div>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'cultura':
+          html = `
+            <div class="space-y-8 font-body">
+              <div>
+                <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SPAZIO APPROFONDIMENTO CULTURALE, SOCIALE E SCIENTIFICO</span>
+                <h2 class="font-header text-3xl sm:text-4xl text-stone-100 font-bold mb-2">La Cultura e la Società dietro le Quinte del Risorgimento</h2>
+                <p class="text-sm text-stone-400 max-w-3xl">
+                  L'Italia fu sognata e plasmata dai poeti, dai pittori, dai musicisti e dai romanzieri prima ancora di essere sancita dalle mappe diplomatiche del Regno d'Italia.
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Spiegazione interattiva su Il Bacio di Hayez -->
+                <div class="lg:col-span-7 bg-black/40 border border-yellow-900/20 p-6 rounded-lg space-y-4">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="palette" class="w-6 h-6 text-amber-500"></i>
+                    <h3 class="font-title text-xl text-stone-200">Il Bacio (Hayez, 1859): I Messaggi Politici Celati</h3>
+                  </div>
+
+                  <p class="text-xs sm:text-sm text-stone-300 leading-relaxed">
+                    Questo celeberrimo quadro di Francesco Hayez costituisce un sofisticato manifesto visivo dell'imminente seconda guerra d'indipendenza e dell'accordo franco-piemontese:
+                  </p>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="bg-stone-950 p-3 rounded border border-stone-800">
+                      <strong class="text-amber-400 block mb-1">Il Pugnale dell'Adio</strong>
+                      <span class="text-stone-400">Il giovane in procinto di partire reca un pugnale celato nell'ombra del mantello; rappresenta o cospiratore o o volontario pronto alla trincea.</span>
+                    </div>
+                    <div class="bg-stone-950 p-3 rounded border border-stone-800">
+                      <strong class="text-amber-400 block mb-1">I Colori delle Nazioni</strong>
+                      <span class="text-stone-400">L'azzurro del vestito della fanciulla, combinato con o rosso e l'oro del giovane, richiama espressamente l'alleanza franco-piemontese siglata a Plombières.</span>
+                    </div>
+                  </div>
+
+                  <div class="h-[1px] bg-stone-800 my-4"></div>
+
+                  <!-- Sezione Musicale e Satira d'Epoca -->
+                  <div class="space-y-4">
+                    <h4 class="font-title text-stone-300 text-sm flex items-center gap-1">
+                      <i data-lucide="music" class="w-4 h-4 text-red-400"></i>
+                      Canti e Satira: "Il Fischietto" & "Addio mia bella addio"
+                    </h4>
+                    <p class="text-xs text-stone-400 leading-relaxed">
+                      I giornali satirici piemontesi come <em>"Il Fischietto"</em> deridevano costantemente l'Austria e dipingevano Cavour come un abile burattinaio di corte. Nelle trincee e nelle piazze risuonava o celebre coro <strong>"Addio mia bella addio"</strong>, per accompagnare i soldati alla prima guerra d'indipendenza.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Sezione Destra: Analisi Sociale, Brigantaggio, Legge Pica e Cinema -->
+                <div class="lg:col-span-5 space-y-6">
+                  
+                  <div class="pergamena p-6 rounded-lg text-stone-900 border-2 border-red-900/40">
+                    <h3 class="font-title text-lg text-red-950 font-bold mb-2 flex items-center gap-1">
+                      <i data-lucide="scale" class="w-5 h-5 text-red-900"></i>
+                      Questione Meridionale & Legge Pica
+                    </h3>
+                    <p class="text-xs leading-relaxed mb-3">
+                      L'unificazione portò al Sud l'estensione improvvisa delle tasse e della leva militare obbligatoria piemontesi. Ne conseguì lo scoppio del <strong>Brigantaggio</strong>, una guerriglia rurale disperata contro lo stato sabaudo. 
+                    </p>
+                    <p class="text-xs leading-relaxed">
+                      La risposta di Torino fu rigidamente militare: con la <strong>Legge Pica (1863)</strong> fu sospeso lo stato di diritto costituzionale nel meridione, istituendo tribunali militari speciali e la fucilazione sommaria per i ribelli.
+                    </p>
+                  </div>
+
+                  <div class="bg-stone-900/60 border border-stone-800 p-5 rounded-lg">
+                    <h4 class="font-title text-stone-300 text-xs mb-2 flex items-center gap-1">
+                      <i data-lucide="clapperboard" class="w-4 h-4 text-amber-500"></i>
+                      La Lettura del Gattopardo
+                    </h4>
+                    <p class="text-xs text-stone-400 leading-relaxed">
+                      Il celebre dialogo tra o Principe di Salina e Chevalley esprime mirabilmente lo scetticismo siciliano: <strong>"Se vogliamo che tutto rimanga com'è, bisogna che tutto cambi"</strong>. L'annessione dell'aristocrazia meridionale tradusse o Risorgimento in una mera transizione di potere gattopardesca.
+                    </p>
+                  </div>
+
+                </div>
+
+              </div>
+              
+              <div class="text-center">
+                <button onclick="goToPage('finale')" class="btn-ottocento px-8 py-3 rounded text-sm shadow-xl">
+                  Entra nel Salone d'Onore (Gran Finale e Quiz)
+                </button>
+              </div>
+            </div>
+          `;
+          break;
+
+        case 'finale':
+          html = `
+            <div class="space-y-8 max-w-4xl mx-auto text-center font-body">
+              <div>
+                <span class="text-xs font-title text-amber-500 tracking-widest uppercase block mb-2">SALONE D'ONORE DEL MUSEO NAZIONALE</span>
+                <h2 class="font-header text-4xl text-stone-100 font-bold mb-4">L'Italia è Fatta!</h2>
+                <div class="h-[1px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent w-2/3 mx-auto mb-6"></div>
+              </div>
+
+              <!-- Quiz Finale ed educativo sul Risorgimento -->
+              <div class="bg-black/50 border border-yellow-900/30 p-6 rounded-lg text-left max-w-2xl mx-auto shadow-2xl font-body">
+                <h3 class="font-title text-sm text-amber-500 tracking-widest uppercase mb-4 flex items-center gap-1">
+                  <i data-lucide="award" class="w-5 h-5 text-amber-500"></i>
+                  Verifica Finale: Quiz del Risorgimento
+                </h3>
+
+                <div class="mb-6">
+                  <span class="text-[10px] font-title text-stone-500 block mb-1">Domanda ${state.quizGeneraleIndex + 1} di ${domandeQuizGenerale.length}</span>
+                  <p class="text-stone-200 font-semibold text-sm sm:text-base">${domandeQuizGenerale[state.quizGeneraleIndex].q}</p>
+                </div>
+
+                <div class="space-y-3 mb-6" id="quiz-options-container">
+                  ${optionsHtml}
+                </div>
+
+                ${state.quizGeneraleMostraSpiegazione ? `
+                  <div class="bg-stone-950 p-4 rounded border border-stone-800 mb-6 text-xs text-stone-400 font-body leading-relaxed">
+                    <strong class="text-amber-500 block mb-1 font-title">Spiegazione Storica:</strong>
+                    ${domandeQuizGenerale[state.quizGeneraleIndex].spiegazione}
+                  </div>
+                  <button onclick="avantiQuizGenerale()" class="btn-ottocento w-full py-2.5 rounded text-xs">
+                    ${state.quizGeneraleIndex === domandeQuizGenerale.length - 1 ? 'Concludi e Resetta il Quiz' : 'Prossima Domanda'}
+                  </button>
+                ` : ''}
+              </div>
+
+              <div class="text-stone-400 text-sm max-w-xl mx-auto leading-relaxed">
+                "L'Italia è stata una nazione unita prima di diventare uno Stato sovrano. Nel 1861, alla fine di lunghi decenni di lotte e ideali patriottici, nasce lo Stato Italiano."
+              </div>
+
+              <div class="pt-6">
+                <button onclick="goToPage('welcome')" class="btn-ottocento px-6 py-3 rounded text-xs">
+                  Torna all'Ingresso del Museo
+                </button>
+              </div>
+            </div>
+          `;
+          break;
+      }
+
+      container.innerHTML = html;
+      // Re-inizializzazione icone Lucide injectate dinamicamente
+      lucide.createIcons();
+    }
+
+    // --- CARICAMENTO E BOOTSTRAP INIZIALE ---
+    window.onload = function() {
+      render();
+      // Apertura automatica guida d'aiuto per un onboarding ottimale
+      setTimeout(() => {
+        openModal('modal-guida');
+      }, 500);
+    }
+  </script>
+</body>
+</html>
